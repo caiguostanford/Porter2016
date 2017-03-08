@@ -85,8 +85,12 @@ becoming friends with the communicator. Subsequent analyses (two-way ANOVAs for 
 
 **Clarify key analysis of interest here**  You can also pre-specify additional analyses you plan to do.
 
+<<<<<<< HEAD
 ###Key Analysis
 Key analysis is the three-way interaction in the ANOVA of the friendship measure in the previous section.
+=======
+Key analysis is the 3rd analysis in the previous section.
+>>>>>>> origin/master
 
 ###Differences from Original Study
 
@@ -179,6 +183,7 @@ The analyses as specified in the analysis plan.
 sem <- function(x) {sd(x, na.rm=TRUE) / sqrt(length(x))}
 ci95 <- function(x) {sem(x) * 1.96}
 
+<<<<<<< HEAD
 
 #social inference graph
 agg <- ds %>%
@@ -215,6 +220,17 @@ plot2 = ggplot(agg,aes(x=Party, y=mean, fill=LIB)) +
 facet_grid(. ~Political)
 plot2 
 #faceted by participants' own group membership
+=======
+#social inference graph
+ggplot(ds, aes(x=Party, y=Communicator, fill=LIB))+
+  geom_bar(position="dodge", stat = "identity") +
+    geom_errorbar(aes(ymin=Communicator-sem(Communicator), ymax=Communicator+sem(Communicator)), width=.25,position=position_dodge(.9)) + facet_grid(. ~Political) #faceted by participants' own group membership
+
+#friendship graph
+ggplot(ds, aes(x=Party, y=Friend, fill=LIB))+
+  geom_bar(position="dodge", stat = "identity") +
+    geom_errorbar(aes(ymin=Friend-sem(Friend), ymax=Communicator+sem(Friend)), width=.25,position=position_dodge(.9)) + facet_grid(. ~Political) #faceted by participants' own group membership
+>>>>>>> origin/master
 ```
 
 ###Exploratory analyses
