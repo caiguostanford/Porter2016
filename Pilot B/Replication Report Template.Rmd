@@ -1,0 +1,238 @@
+---
+title: "Replication of Study 3 by Porter, Rheinschmidt-Same, and Richeson (2016, Psychological Science)"
+author: "Cai Guo (caiguo@stanford.edu)"
+date: "`March 07, 2017`"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+---
+
+<!-- Replication reports should all use this template to standardize reporting across projects.  These reports will be public supplementary materials that accompany the summary report(s) of the aggregate results. -->
+
+##Introduction
+
+This is a replication project of the Study 3 of Porter, Rheinschmidt-Same, and Richeson (2016) titled "Inferring identity from language: Linguistic intergroup bias informs social categorization" published in Psychological Science. The original study examined 1) whether people could infer a communicator's political group membership based on the kind of language bias in the communicator's description of another individual whose political group membership was known, and 2) whether the kind of language bias used by the communicator could influence participants' intention to be friends with the communicator and whether this intention was qualified by the interaction between participants' and the target's political group memberships. 
+
+The original study found that 1) regardless of participants' own political affiliations and the target's political group membership, favorable language bias, compared to unfavorable langauge bias, in the communicator's description led participants to infer that the communicator and the target shared a political group membership, and that 2) for the friendship measure, there was a significant interaction between LIB and target's political affiliation, which was qualified by a three-way interaction between LIB, target political affiliation and participants' own political affiliation. Subsequent analyses showed that democrat-identified participants were more likely to be friends with the communicator used favorable language bias, compared to unfavorable language bias, to describe a democrat -- this pattern did not show for Republican or Independent participants. 
+
+##Methods
+
+###Power Analysis
+
+The original effect size for the key test (three-way interaction for the friendship measure) was 0.24. To achieve 80% power, the planned sample size should be 168; 90% should be 220; 95% should be 268. 
+
+###Planned Sample
+
+Planned sample size is 168. Termination rule is that the study will finish as soon as it has reached this planned sample size. Sample method would be convenience sample on MTurk. 
+
+###Materials
+
+"As in Study 1a, participants
+were asked to read a passage and then respond to questions.
+In the Republican-target condition, the passage
+indicated that Peter had voted for John McCain; in the
+Democratic-target condition, Peter had voted for Barack
+Obama.
+In the second part of the passage, participants were
+again provided with an unknown communicator’s
+description of Peter’s helpful and rude behaviors.
+Following Wigboldus et.al. (2000), we included a description
+of one discrete episode, expressed in the present
+tense, for each type of behavior (for the full descriptions,
+see Table S1 in the Supplemental Material available
+online). For example, the description of helpful behavior
+in the favorable-LIB condition was written in abstract language
+and read as follows: “On one occasion, there is a
+person in a wheelchair who needs assistance getting up
+a ramp. Peter reaches for the handles of the wheelchair.
+Peter is helpful.” In the unfavorable-LIB condition, helpful
+behavior was described concretely: “On one occasion,
+there is a person in a wheelchair who needs assistance
+getting up a ramp. Peter reaches for the handles of the
+wheelchair. Peter pushes the wheelchair up the ramp.”
+After reading the passage, participants indicated the
+likely group membership of the communicator on an
+8-point scale anchored by 1, definitely a Democrat, and
+8, definitely a Republican. They then rated the likelihood
+that they would be friends with the communicator, using
+a 5-point scale ranging from 1, it is not at all likely, to 5,
+it is extremely likely. Finally, participants completed the
+manipulation-check items and a demographic questionnaire
+on which they reported their political-party affiliation
+and political ideology."
+
+###Procedure	
+
+It is combined with materials -- see above
+
+###Analysis Plan
+
+1. Conduct a two-way ANOVA (LIB x Target's political affiliation) to examine the manipulation check question -- whether favorable LIB (unfavorable LIB) led participants to conclude that the target was more likely to be helpful (rude) in the future and whether this pattern differed depending on the target's political affiliation. 
+
+2. Conduct a 2 (LIB condition) × 2 (target’s political affiliation) × 3
+(participant’s political affiliation: Democrat vs. Republican
+vs. Independent) analysis of variance (ANOVA) to examine whether participants can infer the communicator's political group identity based on the kind of language bias and the target's political affiliation as well as whether participants' own political affiliation moderated their judgment of the communicator's political identity. Subsequent analyses (two-way ANOVAs for two-way interactions across the levels of the 3rd variable and pairwise t-tests for simple effects) will be conducted depending on the results of the previous ANOVA to explain the details of the interactions. 
+
+3. Conduct a 2 (LIB condition) × 2 (target’s
+political affiliation) × 3 (participant’s political affiliation:
+Democrat vs. Republican vs. Independent) analysis
+of variance of participants’ ratings of their likelihood of
+becoming friends with the communicator. Subsequent analyses (two-way ANOVAs for two-way interactions across the levels of the 3rd variable and pairwise t-tests for simple effects) will be conducted depending on the results of the previous ANOVA to explain the details of the interactions. 
+
+
+**Clarify key analysis of interest here**  You can also pre-specify additional analyses you plan to do.
+
+###Key Analysis
+Key analysis is the three-way interaction in the ANOVA of the friendship measure in the previous section.
+
+###Differences from Original Study
+
+Since we failed to obtain the specific wording of questions and instructions from the authors, we came up with our own specific wording for the questions and instructions. We do not expect the difference to create significant deviation from the original study. 
+
+### Methods Addendum (Post Data Collection)
+
+You can comment this section out prior to final report with data collection.
+
+#### Actual Sample
+  Sample size, demographics, data exclusions based on rules spelled out in analysis plan
+
+#### Differences from pre-data collection methods plan
+  Any differences from what was described as the original plan, or “none”.
+
+
+##Results
+
+
+### Data preparation
+
+Data preparation following the analysis plan.
+	
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(ggplot2)
+```
+####clean data
+```{r clean data}
+d <- read_csv("~/Downloads/Pillot B.csv")
+
+d_tidy = d %>%
+  mutate(index=rownames(d)) %>%
+  gather(variable, value, Communicator.F.D:Rude.U.R) %>%
+  group_by(index) %>%
+  separate(variable, into=c("variable.n", "LIB", "Party")) 
+
+ds = spread(d_tidy, variable.n, value)
+ds$Party = as.factor(ds$Party)
+ds$Political = as.factor(ds$Political)
+ds$LIB = as.factor(ds$LIB)
+```
+
+###Descriptive Stats
+```{r descrptive}
+table(ds$Gender)
+table(ds$Race)
+summary(ds$Age)
+```
+
+####manipulation check
+```{r Manipulation Check}
+summary(lm(Helpful~LIB, ds)) #main effect of LIB on estimation of helpfulness
+summary(lm(Helpful~LIB*Party, ds)) #interaction between LIB and target's political group
+summary(lm(Rude~LIB, ds)) #main effect of LIB on estimation of rudeness
+summary(lm(Rude~LIB*Party, ds)) #interaction between LIB and target's political group
+```
+####Social Identity Measure
+```{r Social Identity Inference}
+#Main effects
+summary(lm(Communicator~LIB, ds)) #LIB
+summary(lm(Communicator~Party, ds)) #Target's group membership
+summary(lm(Communicator~Political, ds)) #Participants' own group membership
+
+#Contrast 1 -- When Favorable LIB, Democrat (communicator), and Democrat (participant) are the defaults
+summary(lm(Communicator~LIB*Party*Political, ds))
+summary(lm(Communicator~LIB*Party,ds))
+summary(lm(Communicator~Party*Political, ds))
+
+#The exact contrasts to test simple effects will be detailed after all data have been collected and the significant interactions have been known.
+```
+####Friendship Measure
+```{r Be Friends}
+#main effects
+summary(lm(Friend~LIB, ds)) #LIB
+summary(lm(Friend~Party, ds)) #Target's group membership
+summary(lm(Friend~Political, ds)) #Participants' own group membership
+
+#Contrast 1 -- When Favorable LIB, Democrat (communicator), and Democrat (participant) are the defaults
+summary(lm(Friend~LIB*Party*Political, ds))
+summary(lm(Friend~LIB*Party, ds))
+summary(lm(Friend~Party*Political, ds))
+#The exact contrasts to test simple effects will be detailed after all data have been collected and the significant interactions have been known.
+```
+
+### Confirmatory analysis
+
+The analyses as specified in the analysis plan.  
+
+*Side-by-side graph with original graph is ideal here*
+
+```{r replication plots}
+#set up error bar function
+sem <- function(x) {sd(x, na.rm=TRUE) / sqrt(length(x))}
+ci95 <- function(x) {sem(x) * 1.96}
+
+
+#social inference graph
+agg <- ds %>%
+  group_by(Party,LIB, Political) %>%
+  summarise(mean = mean(Communicator,na.rm=T),
+            se = sem(Communicator),
+            upper = mean + se,
+            lower = mean - se)
+
+plot1 = ggplot(agg,aes(x=Party, y=mean, fill=LIB)) +
+  geom_bar(position="dodge", stat="identity") +
+  geom_errorbar(   aes( ymax=upper, ymin=lower ) , 
+                     		width   =.25,
+	                    	linetype="solid", position=position_dodge(.9)
+	                    	) + 
+  theme_bw() +
+facet_grid(. ~Political)
+plot1
+#faceted by participants' own group membership
+
+#friendship graph
+agg <- ds %>%
+  group_by(Party,LIB, Political) %>%
+  summarise(mean = mean(Friend,na.rm=T),
+            se = sem(Friend),
+            upper = mean + se,
+            lower = mean - se)
+
+plot2 = ggplot(agg,aes(x=Party, y=mean, fill=LIB)) +
+  geom_bar(position="dodge", stat="identity") +
+  geom_errorbar(aes( ymax=upper, ymin=lower ), width =.25,
+	                    	linetype="solid", position=position_dodge(.9)) + 
+  theme_bw() +
+facet_grid(. ~Political)
+plot2 
+#faceted by participants' own group membership
+```
+
+###Exploratory analyses
+
+Any follow-up analyses desired (not required).  
+
+## Discussion
+
+### Summary of Replication Attempt
+
+Open the discussion section with a paragraph summarizing the primary result from the confirmatory analysis and the assessment of whether it replicated, partially replicated, or failed to replicate the original result.  
+
+### Commentary
+
+Add open-ended commentary (if any) reflecting (a) insights from follow-up exploratory analysis, (b) assessment of the meaning of the replication (or not) - e.g., for a failure to replicate, are the differences between original and present study ones that definitely, plausibly, or are unlikely to have been moderators of the result, and (c) discussion of any objections or challenges raised by the current and original authors about the replication attempt.  None of these need to be long.
