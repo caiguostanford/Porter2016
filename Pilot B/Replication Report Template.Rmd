@@ -66,7 +66,7 @@ and political ideology."
 
 ###Procedure	
 
-It is combined with materials -- see above
+It is combined with materials -- see above.
 
 ###Analysis Plan
 
@@ -81,9 +81,6 @@ political affiliation) × 3 (participant’s political affiliation:
 Democrat vs. Republican vs. Independent) analysis
 of variance of participants’ ratings of their likelihood of
 becoming friends with the communicator. Subsequent analyses (two-way ANOVAs for two-way interactions across the levels of the 3rd variable and pairwise t-tests for simple effects) will be conducted depending on the results of the previous ANOVA to explain the details of the interactions. 
-
-
-**Clarify key analysis of interest here**  You can also pre-specify additional analyses you plan to do.
 
 ###Key Analysis
 Key analysis is the three-way interaction in the ANOVA of the friendship measure in the previous section.
@@ -110,14 +107,19 @@ You can comment this section out prior to final report with data collection.
 
 Data preparation following the analysis plan.
 	
-```{r setup, include=FALSE}
+```{r setup, message=FALSE, warning=FALSE, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
 library(ggplot2)
+library(magrittr)
+library(dplyr)
+library(broom)
+library(stringr)
+library(knitr)
 ```
 ####clean data
-```{r clean data}
+```{r message=FALSE, warning=FALSE}
 d <- read_csv("~/Downloads/Pillot B.csv")
 
 d_tidy = d %>%
@@ -132,45 +134,148 @@ ds$Political = as.factor(ds$Political)
 ds$LIB = as.factor(ds$LIB)
 ```
 
-###Descriptive Stats
-```{r descrptive}
-table(ds$Gender)
-table(ds$Race)
-summary(ds$Age)
+####Set up functions to clean regression outputs
+```{r message=FALSE, warning=FALSE}
+#print with 2 digits of precision
+fixed_digits <- function(xs, n = 2) {
+  formatC(xs, digits = n, format = "f")
+}
+
+# Print three digits of a p-value, but use
+# the "< .001" notation on tiny values.
+format_pval <- function(ps, html = FALSE) {
+  tiny <- ifelse(html, "&lt;&nbsp;.001", "< .001")
+  ps_chr <- ps %>% fixed_digits(3)
+  ps_chr[ps < 0.001] <- tiny
+  ps_chr
+}
+#fix names
+fix_names <- . %>%
+  str_replace(".Intercept.", "Intercept") %>%
+  str_replace("LIBU", "Unfavorable LIB") %>%
+  str_replace("LIBF", "Favorable LIB") %>%
+  str_replace("PartyD", "Democrat Target") %>%
+  str_replace("PartyR", "Repubican Target") %>%
+  str_replace("PoliticalDemocrat", "Democrat Participant") %>%
+  str_replace("PoliticalRepublican", "Republican Participant") %>%
+  str_replace("PoliticalIndependent", "Independent Participant")
+
+#formatting pipeline
+two_digits <- . %>% fixed_digits(2)
+table_names <- c("Parameter", "Estimate", "SE",
+                 "_t_", "_p_")
+
+format_model_table <- . %>%
+  mutate_each(funs(two_digits),
+              -term, -p.value) %>%
+  mutate(term=fix_names(term), p.value = format_pval(p.value)) %>%
+  set_colnames(table_names)
+
 ```
 
-####manipulation check
-```{r Manipulation Check}
-summary(lm(Helpful~LIB, ds)) #main effect of LIB on estimation of helpfulness
-summary(lm(Helpful~LIB*Party, ds)) #interaction between LIB and target's political group
-summary(lm(Rude~LIB, ds)) #main effect of LIB on estimation of rudeness
-summary(lm(Rude~LIB*Party, ds)) #interaction between LIB and target's political group
+####Descriptive Stats
+```{r descrptive}
+table(d$Gender)
+table(d$Race)
+summary(d$Age)
+```
+
+####Manipulation Check
+```{r message=FALSE, warning=FALSE}
+#main effect of LIB on estimation of helpfulness
+lm(Helpful~LIB, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
+
+#interaction between LIB and target's political group
+lm(Helpful~LIB*Party, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
+
+#main effect of LIB on estimation of rudeness
+lm(Rude~LIB, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
+
+#interaction between LIB and target's political group
+lm(Rude~LIB*Party, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
 ```
 ####Social Identity Measure
-```{r Social Identity Inference}
+```{r message=FALSE, warning=FALSE}
 #Main effects
-summary(lm(Communicator~LIB, ds)) #LIB
-summary(lm(Communicator~Party, ds)) #Target's group membership
-summary(lm(Communicator~Political, ds)) #Participants' own group membership
+lm(Communicator~LIB, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")   #LIB
+
+lm(Communicator~Party, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  #Target's group membership
+
+lm(Communicator~Political, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")   #Participants' own group membership
 
 #Contrast 1 -- When Favorable LIB, Democrat (communicator), and Democrat (participant) are the defaults
-summary(lm(Communicator~LIB*Party*Political, ds))
-summary(lm(Communicator~LIB*Party,ds))
-summary(lm(Communicator~Party*Political, ds))
+lm(Communicator~LIB*Party*Political, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
+
+lm(Communicator~LIB*Party,ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
+
+lm(Communicator~Party*Political, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
 
 #The exact contrasts to test simple effects will be detailed after all data have been collected and the significant interactions have been known.
 ```
+
 ####Friendship Measure
-```{r Be Friends}
+```{r message=FALSE, warning=FALSE}
 #main effects
-summary(lm(Friend~LIB, ds)) #LIB
-summary(lm(Friend~Party, ds)) #Target's group membership
-summary(lm(Friend~Political, ds)) #Participants' own group membership
+lm(Friend~LIB, ds)%>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  #LIB
+
+lm(Friend~Party, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")   #Target's group membership
+
+lm(Friend~Political, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")   #Participants' own group membership
 
 #Contrast 1 -- When Favorable LIB, Democrat (communicator), and Democrat (participant) are the defaults
-summary(lm(Friend~LIB*Party*Political, ds))
-summary(lm(Friend~LIB*Party, ds))
-summary(lm(Friend~Party*Political, ds))
+lm(Friend~LIB*Party*Political, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
+
+lm(Friend~LIB*Party, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
+
+lm(Friend~Party*Political, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
 #The exact contrasts to test simple effects will be detailed after all data have been collected and the significant interactions have been known.
 ```
 
@@ -178,14 +283,39 @@ summary(lm(Friend~Party*Political, ds))
 
 The analyses as specified in the analysis plan.  
 
-*Side-by-side graph with original graph is ideal here*
+####Social Inference Graph in the original study
 
-```{r replication plots}
+![](http://journals.sagepub.com/na101/home/literatum/publisher/sage/journals/content/pssa/2016/pssa_27_1/0956797615612202/20170109/images/medium/10.1177_0956797615612202-fig3.gif)
+
+####Table in the original study
+
+![](http://journals.sagepub.com/na101/home/literatum/publisher/sage/journals/content/pssa/2016/pssa_27_1/0956797615612202/20170109/images/medium/10.1177_0956797615612202-table1.gif)
+
+####Social Inference Graph w/o facets in the current study
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 #set up error bar function
 sem <- function(x) {sd(x, na.rm=TRUE) / sqrt(length(x))}
-ci95 <- function(x) {sem(x) * 1.96}
 
+agg <- ds %>%
+  group_by(Party,LIB, Political) %>%
+  summarise(mean = mean(Communicator,na.rm=T),
+            se = sem(Communicator),
+            upper = mean + se,
+            lower = mean - se)
 
+plot1 = ggplot(agg,aes(x=Party, y=mean, fill=LIB)) +
+  geom_bar(position="dodge", stat="identity") +
+  geom_errorbar(   aes( ymax=upper, ymin=lower ) , 
+                     		width   =.25,
+	                    	linetype="solid", position=position_dodge(.9)
+	                    	) + 
+  theme_bw() + ggtitle("Social Inference")
+plot1
+```
+
+####Social Inference Graph (faceted by participants' political affiliation) in the current study
+
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 #social inference graph
 agg <- ds %>%
   group_by(Party,LIB, Political) %>%
@@ -201,10 +331,13 @@ plot1 = ggplot(agg,aes(x=Party, y=mean, fill=LIB)) +
 	                    	linetype="solid", position=position_dodge(.9)
 	                    	) + 
   theme_bw() +
-facet_grid(. ~Political)
+facet_grid(. ~Political) + ggtitle("Social Inference")
 plot1
 #faceted by participants' own group membership
+```
 
+####Friendship Graph in the current study
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 #friendship graph
 agg <- ds %>%
   group_by(Party,LIB, Political) %>%
@@ -218,7 +351,7 @@ plot2 = ggplot(agg,aes(x=Party, y=mean, fill=LIB)) +
   geom_errorbar(aes( ymax=upper, ymin=lower ), width =.25,
 	                    	linetype="solid", position=position_dodge(.9)) + 
   theme_bw() +
-facet_grid(. ~Political)
+facet_grid(. ~Political) + ggtitle("Friendship")
 plot2 
 #faceted by participants' own group membership
 ```
