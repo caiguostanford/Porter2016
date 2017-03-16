@@ -1,0 +1,8 @@
+name: Publish Document
+title:
+account: rpubs
+server: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/258865/efb57408a246456db8c8dc8ed01fa36f
+bundleId: https://api.rpubs.com/api/v1/document/258865/efb57408a246456db8c8dc8ed01fa36f
+url: http://rpubs.com/sansiropp/258865
+when: 1489617476.75496

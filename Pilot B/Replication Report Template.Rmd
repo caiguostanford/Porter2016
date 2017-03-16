@@ -87,7 +87,7 @@ Key analysis is the three-way interaction in the ANOVA of the friendship measure
 
 ###Differences from Original Study
 
-Since we failed to obtain the specific wording of questions and instructions from the authors, we came up with our own specific wording for the questions and instructions. We do not expect the difference to create significant deviation from the original study. 
+Since we failed to obtain the specific wording of questions and instructions from the authors, we came up with our own specific wording for the questions and instructions. We do not expect the differences to create significant deviation from the original study. In particular, we used "How would you describe your political "  
 
 ### Methods Addendum (Post Data Collection)
 
@@ -155,7 +155,7 @@ fix_names <- . %>%
   str_replace("LIBU", "Unfavorable LIB") %>%
   str_replace("LIBF", "Favorable LIB") %>%
   str_replace("PartyD", "Democrat Target") %>%
-  str_replace("PartyR", "Repubican Target") %>%
+  str_replace("PartyR", "Republican Target") %>%
   str_replace("PoliticalDemocrat", "Democrat Participant") %>%
   str_replace("PoliticalRepublican", "Republican Participant") %>%
   str_replace("PoliticalIndependent", "Independent Participant")
@@ -180,105 +180,6 @@ table(d$Race)
 summary(d$Age)
 ```
 
-####Manipulation Check
-```{r message=FALSE, warning=FALSE}
-#main effect of LIB on estimation of helpfulness
-lm(Helpful~LIB, ds) %>%
-  tidy %>%
-  format_model_table %>%
-  kable(align = "r")  
-
-#interaction between LIB and target's political group
-lm(Helpful~LIB*Party, ds) %>%
-  tidy %>%
-  format_model_table %>%
-  kable(align = "r")  
-
-#main effect of LIB on estimation of rudeness
-lm(Rude~LIB, ds) %>%
-  tidy %>%
-  format_model_table %>%
-  kable(align = "r")  
-
-#interaction between LIB and target's political group
-lm(Rude~LIB*Party, ds) %>%
-  tidy %>%
-  format_model_table %>%
-  kable(align = "r")  
-```
-####Social Identity Measure
-```{r message=FALSE, warning=FALSE}
-#Main effects
-lm(Communicator~LIB, ds) %>%
-  tidy %>%
-  format_model_table %>%
-  kable(align = "r")   #LIB
-
-lm(Communicator~Party, ds) %>%
-  tidy %>%
-  format_model_table %>%
-  kable(align = "r")  #Target's group membership
-
-lm(Communicator~Political, ds) %>%
-  tidy %>%
-  format_model_table %>%
-  kable(align = "r")   #Participants' own group membership
-
-#Contrast 1 -- When Favorable LIB, Democrat (communicator), and Democrat (participant) are the defaults
-lm(Communicator~LIB*Party*Political, ds) %>%
-  tidy %>%
-  format_model_table %>%
-  kable(align = "r")  
-
-lm(Communicator~LIB*Party,ds) %>%
-  tidy %>%
-  format_model_table %>%
-  kable(align = "r")  
-
-lm(Communicator~Party*Political, ds) %>%
-  tidy %>%
-  format_model_table %>%
-  kable(align = "r")  
-
-#The exact contrasts to test simple effects will be detailed after all data have been collected and the significant interactions have been known.
-```
-
-####Friendship Measure
-```{r message=FALSE, warning=FALSE}
-#main effects
-lm(Friend~LIB, ds)%>%
-  tidy %>%
-  format_model_table %>%
-  kable(align = "r")  #LIB
-
-lm(Friend~Party, ds) %>%
-  tidy %>%
-  format_model_table %>%
-  kable(align = "r")   #Target's group membership
-
-lm(Friend~Political, ds) %>%
-  tidy %>%
-  format_model_table %>%
-  kable(align = "r")   #Participants' own group membership
-
-#Contrast 1 -- When Favorable LIB, Democrat (communicator), and Democrat (participant) are the defaults
-lm(Friend~LIB*Party*Political, ds) %>%
-  tidy %>%
-  format_model_table %>%
-  kable(align = "r")  
-
-lm(Friend~LIB*Party, ds) %>%
-  tidy %>%
-  format_model_table %>%
-  kable(align = "r")  
-
-lm(Friend~Party*Political, ds) %>%
-  tidy %>%
-  format_model_table %>%
-  kable(align = "r")  
-#The exact contrasts to test simple effects will be detailed after all data have been collected and the significant interactions have been known.
-```
-
 ### Confirmatory analysis
 
 The analyses as specified in the analysis plan.  
@@ -297,13 +198,13 @@ The analyses as specified in the analysis plan.
 sem <- function(x) {sd(x, na.rm=TRUE) / sqrt(length(x))}
 
 agg <- ds %>%
-  group_by(Party,LIB, Political) %>%
-  summarise(mean = mean(Communicator,na.rm=T),
+  group_by(Party,LIB) %>%
+  summarise(m = mean(Communicator,na.rm=T),
             se = sem(Communicator),
-            upper = mean + se,
-            lower = mean - se)
+            upper = m + se,
+            lower = m - se)
 
-plot1 = ggplot(agg,aes(x=Party, y=mean, fill=LIB)) +
+plot1 = ggplot(agg,aes(x=Party, y=m, fill=LIB)) +
   geom_bar(position="dodge", stat="identity") +
   geom_errorbar(   aes( ymax=upper, ymin=lower ) , 
                      		width   =.25,
@@ -356,9 +257,211 @@ plot2
 #faceted by participants' own group membership
 ```
 
-###Exploratory analyses
+####Manipulation Check
+```{r message=FALSE, warning=FALSE}
+#main effect of LIB on estimation of helpfulness
+lm(Helpful~LIB, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
 
-Any follow-up analyses desired (not required).  
+f = summary(lm(Helpful~LIB, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+#interaction between LIB and target's political group
+lm(Helpful~LIB*Party, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
+
+f = summary(lm(Helpful~LIB*Party, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+#main effect of LIB on estimation of rudeness
+lm(Rude~LIB, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
+
+f = summary(lm(Rude~LIB, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+#interaction between LIB and target's political group
+lm(Rude~LIB*Party, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
+
+f = summary(lm(Rude~LIB*Party, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+```
+####Social Identity Measure
+```{r message=FALSE, warning=FALSE}
+#Main effect of LIB
+lm(Communicator~LIB, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")   #LIB
+
+f = summary(lm(Communicator~LIB, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+#Main effect of target's party 
+lm(Communicator~Party, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  #Target's group membership
+
+f = summary(lm(Communicator~Party, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+#Main effect of participant's party
+lm(Communicator~Political, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")   #Participants' own group membership
+
+f = summary(lm(Communicator~Political, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+
+#Three-way interaction Contrast 1 -- When Favorable LIB, Democrat (communicator), and Democrat (participant) are the defaults
+lm(Communicator~LIB*Party*Political, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
+
+f = summary(lm(Communicator~LIB*Party*Political, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+##########
+
+lm(Communicator~LIB*Party,ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
+
+f = summary(lm(Communicator~LIB*Party,ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+############  
+lm(Communicator~Party*Political, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
+
+f = summary(lm(Communicator~Party*Political, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+#The exact contrasts to test simple effects will be detailed after all data have been collected and the significant interactions have been known.
+```
+
+####Friendship Measure
+```{r message=FALSE, warning=FALSE}
+#main effect of LIB
+lm(Friend~LIB, ds)%>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  #LIB
+
+f = summary(lm(Friend~LIB, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+#main effect of target's party
+lm(Friend~Party, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")   #Target's group membership
+
+f = summary(lm(Friend~Party, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+#main effect of participant's party
+lm(Friend~Political, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")   #Participants' own group membership
+
+f = summary(lm(Friend~Political, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+#Three-way interaction Contrast 1 -- When Favorable LIB, Democrat (communicator), and Democrat (participant) are the defaults
+lm(Friend~LIB*Party*Political, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
+
+f = summary(lm(Friend~LIB*Party*Political, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+#########
+lm(Friend~LIB*Party, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
+
+f = summary(lm(Friend~LIB*Party, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+##########
+lm(Friend~Party*Political, ds) %>%
+  tidy %>%
+  format_model_table %>%
+  kable(align = "r")  
+
+f = summary(lm(Friend~Party*Political, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+#The exact contrasts to test simple effects will be detailed after all data have been collected and the significant interactions have been known.
+```
 
 ## Discussion
 
