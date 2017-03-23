@@ -231,8 +231,8 @@ div.tocify {
 <!-- Replication reports should all use this template to standardize reporting across projects.  These reports will be public supplementary materials that accompany the summary report(s) of the aggregate results. -->
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>This is a replication project of the Study 3 of Porter, Rheinschmidt-Same, and Richeson (2016) titled “Inferring identity from language: Linguistic intergroup bias informs social categorization” published in <em>Psychological Science</em>. The original study examined 1) whether people could infer a communicator’s political group membership based on the kind of language bias in the communicator’s description of another individual whose political group membership was known and 2) whether the effect in 1) could be moderated by the target’s and participants’ own political group memberships. The original study also examined 1) whether the kind of language bias used by the communicator could influence participants’ intention to be friends with the communicator and 2) whether this intention was qualified by the interaction between participants’ and the target’s political group memberships.</p>
-<p>The original study found that 1) regardless of participants’ own political affiliations and the target’s political group membership, favorable language bias, compared to unfavorable langauge bias, in the communicator’s description led participants to infer that the communicator and the target shared a political group membership (no moderating effects of the target’s or participants’ own group memberships), and that 2) for the friendship measure, there was a significant interaction between LIB and target’s political affiliation, which was qualified by a three-way interaction between LIB, target political affiliation and participants’ own political affiliation. Subsequent analyses showed that democrat-identified participants were more likely to be friends with the communicator used favorable language bias, compared to unfavorable language bias, to describe a democrat – this pattern did not show for Republican or Independent participants.</p>
+<p>This is a replication project of the Study 3 of Porter, Rheinschmidt-Same, and Richeson (2016) titled “Inferring identity from language: Linguistic intergroup bias informs social categorization” published in <em>Psychological Science</em>. The original study examined 1) whether people could infer a communicator’s political group membership based on the kind of language bias in the communicator’s description of another individual whose political group membership was known and 2) whether the effect in (1) could be moderated by the target’s and participants’ own political group memberships. The original study also examined 1) whether the kind of language bias used by the communicator could influence participants’ intention to be friends with the communicator and 2) whether this intention was qualified by the interaction between participants’ and the target’s political group memberships.</p>
+<p>The original study found that 1) regardless of participants’ own political affiliations and the target’s political group membership, favorable language bias, compared to unfavorable langauge bias, in the communicator’s description led participants to infer that the communicator and the target shared a political group membership (no moderating effects of the target’s or participants’ own group memberships), and that 2) for the friendship measure, there was a significant interaction between LIB and target’s political affiliation, which was qualified by a three-way interaction between LIB, target political affiliation, and participants’ own political affiliation. Subsequent analyses showed that democrat-identified participants were more likely to be friends with the communicator who used favorable language bias, compared to unfavorable language bias, to describe a democrat – this pattern did not show for Republican or Independent participants.</p>
 </div>
 <div id="methods" class="section level2">
 <h2>Methods</h2>
@@ -268,18 +268,17 @@ div.tocify {
 </div>
 <div id="differences-from-original-study" class="section level3">
 <h3>Differences from Original Study</h3>
-<p>Since we failed to obtain the specific wording of questions (prompt) and instructions from the authors, we came up with our own specific wording for the questions and instructions. We do not expect the differences to create significant deviation from the original study. In particular, we used “How would you describe your political affiliation” with three responses “Democrat”, “Republican” and “Independent” (same response options as in the original paper) to ask about participants’ own political affiliations. We used the prompt “How likely would you personally be friends with Peter” to assess participants’ intention to be friends with the communicator. Likewise, we used the prompt “What do you think is the communicator’s political group membership” to ask participants’ perceptions of the communicator’s political group affiliation given that of the target.</p>
+<p>Since we failed to obtain the specific wording of questions (prompt) and instructions from the authors, we came up with our own specific wording for the questions and instructions. We do not expect the differences to create significant deviation from the original study. In particular, we used “How would you describe your political affiliation” with three responses “Democrat”, “Republican” and “Independent” (same response options as in the original paper) to ask about participants’ own political affiliations. We used the prompt “How likely would you personally be friends with Peter” to assess participants’ intention to be friends with the communicator. Likewise, we used the prompt “What do you think is the communicator’s political group membership” to ask about participants’ perceptions of the communicator’s political group affiliation given that of the target.</p>
 </div>
 <div id="methods-addendum-post-data-collection" class="section level3">
 <h3>Methods Addendum (Post Data Collection)</h3>
-<p>You can comment this section out prior to final report with data collection.</p>
 <div id="actual-sample" class="section level4">
 <h4>Actual Sample</h4>
 <p>The current replication attempt included 168 participants, the same number as the planned sample size. Among the 168 participants, 106 identified as men, 62 as women, and one as non-baniry. Moreover, racial and ethnic composition of the final sample was such that 29 identified as Asian/Pacific Islander, 8 as Black, 11 as Latino/Hispanic, 3 as Native American, 116 as White, and 2 as Other. All participants finished all the portions of the study, and none of them was excluded from data analyses.</p>
 </div>
 <div id="differences-from-pre-data-collection-methods-plan" class="section level4">
 <h4>Differences from pre-data collection methods plan</h4>
-<p>None</p>
+<p>We added descriptive statistics to present the means and SDs of the dependent variables. We also added ANOVA tables for the lm models to obtain F statistics as the original paper did. In addition, we modified the interaction analyses for manipulation checks to more precisely follow the original author’s analysis strategies. Specifically, for interactions in assessing manipulation checks, instead of directly making “Helpful” and “Rude” the DVs of the linear regression models, we combined “Helpful” and “Rude” as two levels of a single variable (IV) and created a placeholder DV named “Percentage” so that we could, in the same way as the original authors did, examine whether the interaction between LIB and the target’s group membership differed as a function of the valence of the target’s behavior (Helpful vs. Rude).</p>
 </div>
 </div>
 </div>
@@ -816,6 +815,103 @@ lm(Percentage~LIB*FutureBehavior, d_merge) %&gt;%
 </tr>
 </tbody>
 </table>
+<pre class="r"><code>#change the reference level of LIB to intrepret the interaction
+d_merge$LIB = relevel(d_merge$LIB, ref = &quot;U&quot;)
+lm(Percentage~LIB*FutureBehavior, d_merge) %&gt;%
+  tidy %&gt;%
+  format_model_table_r %&gt;%
+  kable(align = &quot;r&quot;)  </code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Parameter</th>
+<th align="right">Estimate</th>
+<th align="right">SE</th>
+<th align="right"><em>t</em></th>
+<th align="right"><em>p</em></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">Intercept</td>
+<td align="right">53.69</td>
+<td align="right">2.09</td>
+<td align="right">25.74</td>
+<td align="right">&lt; .001</td>
+</tr>
+<tr class="even">
+<td align="right">Favorable LIB</td>
+<td align="right">6.82</td>
+<td align="right">2.96</td>
+<td align="right">2.30</td>
+<td align="right">0.022</td>
+</tr>
+<tr class="odd">
+<td align="right">FutureBehaviorRude</td>
+<td align="right">-7.66</td>
+<td align="right">2.95</td>
+<td align="right">-2.60</td>
+<td align="right">0.010</td>
+</tr>
+<tr class="even">
+<td align="right">Favorable LIB:FutureBehaviorRude</td>
+<td align="right">-8.88</td>
+<td align="right">4.18</td>
+<td align="right">-2.12</td>
+<td align="right">0.035</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>aov(lm(Percentage~LIB*FutureBehavior, d_merge)) %&gt;%
+   tidy %&gt;%
+  format_model_table_k %&gt;%
+  kable(align = &quot;r&quot;) </code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Parameter</th>
+<th align="right">DF</th>
+<th align="right">Sum Sq</th>
+<th align="right">Mean Sq</th>
+<th align="right">F</th>
+<th align="right"><em>p</em></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">LIB</td>
+<td align="right">1.00</td>
+<td align="right">478.36</td>
+<td align="right">478.36</td>
+<td align="right">1.29</td>
+<td align="right">0.256</td>
+</tr>
+<tr class="even">
+<td align="right">FutureBehavior</td>
+<td align="right">1.00</td>
+<td align="right">12312.43</td>
+<td align="right">12312.43</td>
+<td align="right">33.30</td>
+<td align="right">&lt; .001</td>
+</tr>
+<tr class="odd">
+<td align="right">LIB:FutureBehavior</td>
+<td align="right">1.00</td>
+<td align="right">1664.57</td>
+<td align="right">1664.57</td>
+<td align="right">4.50</td>
+<td align="right">0.035</td>
+</tr>
+<tr class="even">
+<td align="right">Residuals</td>
+<td align="right">334.00</td>
+<td align="right">123497.88</td>
+<td align="right">369.75</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="test-whether-the-interaction-between-lib-and-targets-party-differs-as-a-function-of-the-type-of-future-behavior-assessed" class="section level5">
 <h5>Test whether the interaction between LIB and target’s party differs as a function of the type of future behavior assessed</h5>
@@ -836,58 +932,58 @@ lm(Percentage~LIB*FutureBehavior, d_merge) %&gt;%
 <tbody>
 <tr class="odd">
 <td align="right">Intercept</td>
-<td align="right">60.72</td>
+<td align="right">54.37</td>
 <td align="right">2.93</td>
-<td align="right">20.75</td>
+<td align="right">18.58</td>
 <td align="right">&lt; .001</td>
 </tr>
 <tr class="even">
-<td align="right">Unfavorable LIB</td>
-<td align="right">-6.35</td>
+<td align="right">Favorable LIB</td>
+<td align="right">6.35</td>
 <td align="right">4.14</td>
-<td align="right">-1.53</td>
+<td align="right">1.53</td>
 <td align="right">0.126</td>
 </tr>
 <tr class="odd">
 <td align="right">Republican Target</td>
-<td align="right">-0.43</td>
-<td align="right">4.19</td>
-<td align="right">-0.10</td>
-<td align="right">0.919</td>
+<td align="right">-1.37</td>
+<td align="right">4.16</td>
+<td align="right">-0.33</td>
+<td align="right">0.742</td>
 </tr>
 <tr class="even">
 <td align="right">FutureBehaviorRude</td>
-<td align="right">-16.28</td>
+<td align="right">-12.98</td>
 <td align="right">4.14</td>
-<td align="right">-3.93</td>
-<td align="right">&lt; .001</td>
+<td align="right">-3.14</td>
+<td align="right">0.002</td>
 </tr>
 <tr class="odd">
-<td align="right">Unfavorable LIB:Republican Target</td>
-<td align="right">-0.94</td>
+<td align="right">Favorable LIB:Republican Target</td>
+<td align="right">0.94</td>
 <td align="right">5.91</td>
-<td align="right">-0.16</td>
+<td align="right">0.16</td>
 <td align="right">0.873</td>
 </tr>
 <tr class="even">
-<td align="right">Unfavorable LIB:FutureBehaviorRude</td>
-<td align="right">3.30</td>
+<td align="right">Favorable LIB:FutureBehaviorRude</td>
+<td align="right">-3.30</td>
 <td align="right">5.85</td>
-<td align="right">0.56</td>
+<td align="right">-0.56</td>
 <td align="right">0.573</td>
 </tr>
 <tr class="odd">
 <td align="right">Republican Target:FutureBehaviorRude</td>
-<td align="right">-0.53</td>
-<td align="right">5.92</td>
-<td align="right">-0.09</td>
-<td align="right">0.929</td>
+<td align="right">10.76</td>
+<td align="right">5.89</td>
+<td align="right">1.83</td>
+<td align="right">0.068</td>
 </tr>
 <tr class="even">
-<td align="right">Unfavorable LIB:Republican Target:FutureBehaviorRude</td>
-<td align="right">11.29</td>
+<td align="right">Favorable LIB:Republican Target:FutureBehaviorRude</td>
+<td align="right">-11.29</td>
 <td align="right">8.35</td>
-<td align="right">1.35</td>
+<td align="right">-1.35</td>
 <td align="right">0.178</td>
 </tr>
 </tbody>
@@ -997,30 +1093,30 @@ lm(Percentage~LIB*FutureBehavior, d_D) %&gt;%
 <tbody>
 <tr class="odd">
 <td align="right">Intercept</td>
-<td align="right">60.72</td>
+<td align="right">54.37</td>
 <td align="right">2.87</td>
-<td align="right">21.14</td>
+<td align="right">18.93</td>
 <td align="right">&lt; .001</td>
 </tr>
 <tr class="even">
-<td align="right">Unfavorable LIB</td>
-<td align="right">-6.35</td>
+<td align="right">Favorable LIB</td>
+<td align="right">6.35</td>
 <td align="right">4.06</td>
-<td align="right">-1.56</td>
+<td align="right">1.56</td>
 <td align="right">0.120</td>
 </tr>
 <tr class="odd">
 <td align="right">FutureBehaviorRude</td>
-<td align="right">-16.28</td>
+<td align="right">-12.98</td>
 <td align="right">4.06</td>
-<td align="right">-4.01</td>
-<td align="right">&lt; .001</td>
+<td align="right">-3.20</td>
+<td align="right">0.002</td>
 </tr>
 <tr class="even">
-<td align="right">Unfavorable LIB:FutureBehaviorRude</td>
-<td align="right">3.30</td>
+<td align="right">Favorable LIB:FutureBehaviorRude</td>
+<td align="right">-3.30</td>
 <td align="right">5.74</td>
-<td align="right">0.57</td>
+<td align="right">-0.57</td>
 <td align="right">0.566</td>
 </tr>
 </tbody>
@@ -1099,30 +1195,30 @@ lm(Percentage~LIB*FutureBehavior, d_R) %&gt;%
 <tbody>
 <tr class="odd">
 <td align="right">Intercept</td>
-<td align="right">60.29</td>
-<td align="right">3.05</td>
-<td align="right">19.74</td>
+<td align="right">53.00</td>
+<td align="right">3.02</td>
+<td align="right">17.56</td>
 <td align="right">&lt; .001</td>
 </tr>
 <tr class="even">
-<td align="right">Unfavorable LIB</td>
-<td align="right">-7.29</td>
+<td align="right">Favorable LIB</td>
+<td align="right">7.29</td>
 <td align="right">4.29</td>
-<td align="right">-1.70</td>
+<td align="right">1.70</td>
 <td align="right">0.091</td>
 </tr>
 <tr class="odd">
 <td align="right">FutureBehaviorRude</td>
-<td align="right">-16.80</td>
-<td align="right">4.32</td>
-<td align="right">-3.89</td>
-<td align="right">&lt; .001</td>
+<td align="right">-2.21</td>
+<td align="right">4.27</td>
+<td align="right">-0.52</td>
+<td align="right">0.605</td>
 </tr>
 <tr class="even">
-<td align="right">Unfavorable LIB:FutureBehaviorRude</td>
-<td align="right">14.59</td>
+<td align="right">Favorable LIB:FutureBehaviorRude</td>
+<td align="right">-14.59</td>
 <td align="right">6.07</td>
-<td align="right">2.40</td>
+<td align="right">-2.40</td>
 <td align="right">0.017</td>
 </tr>
 </tbody>
@@ -3057,15 +3153,15 @@ chisq.test(x=prop.table(table(ds$Political)), p=c(0.414, 0.313, 0.172), rescale.
 <div id="summary-of-replication-attempt" class="section level3">
 <h3>Summary of Replication Attempt</h3>
 <p>Results in the current replication attempt revealed that overall the original study failed to replicate in the current attempt.</p>
-<p>Specifically, first of all, unlike the original study, the current replication attempt did not find a significant main effect of language bias, <em>F</em>(1, 167) = 0.50, <em>p</em> = .48. Moreover, while the original study did not find a significant main effect of the target’s group membership, the current replication attempt did find such a significant main effect – specifically, regardless of language bias, participants were more likely to perceive the communicator as sharing the same group membership with the target when the target was a Republican than when the target was a Democrat, <em>F</em>(1, 167) = 17.66, <em>p</em> &lt;.001. Similarly, while the original study did not find a significant main effect of participant’s group membership, the current attemp did find such a significant main effect, <em>F</em>(2, 166) = 3.61, <em>p</em> = .029 – specifically, on average, participants who identified as Republican were less likely than those who identified as Democrat to perceive the communicator as having the same group membership as the target, <em>t</em>(166) = -2.67, <em>p</em> = .008, whereas those who identified as Independent did not differ significantly from those who identified as Democrat, <em>t</em>(166) = -0.83, p = .405. In addition, while the original study did not find a significant three-way interactive effect between target’s group membership, language bias, and participants’ group membership, the current attempt did find this interaction to be significant, <em>F</em>(2, 157) = 3.25, <em>p</em> = .041. Since the key measure of interest is whether language bias can reveal group membership (main effect of language bias), the fact that the current attemp did not find a significant main effect of language bias on judgement of the communicator’s membership suggests that the original results on the social inferences meaure failed to replicate.</p>
+<p>Specifically, first of all, unlike the original study, the current replication attempt did not find a significant main effect of language bias on social inference, <em>F</em>(1, 167) = 0.50, <em>p</em> = .48. Moreover, while the original study did not find a significant main effect of the target’s group membership on social inference, the current replication attempt did find such a significant main effect – specifically, regardless of language bias, participants were more likely to perceive the communicator as sharing the same group membership with the target when the target was a Republican than when the target was a Democrat, <em>F</em>(1, 167) = 17.66, <em>p</em> &lt;.001. Similarly, while the original study did not find a significant main effect of participant’s group membership on social inference, the current attemp did find such a significant main effect, <em>F</em>(2, 166) = 3.61, <em>p</em> = .029 – specifically, on average, participants who identified as Republican were less likely than those who identified as Democrat to perceive the communicator as having the same group membership as the target, <em>t</em>(166) = -2.67, <em>p</em> = .008, whereas those who identified as Independent did not differ significantly from those who identified as Democrat, <em>t</em>(166) = -0.83, p = .405. In addition, while the original study did not find a significant three-way interactive effect between target’s group membership, language bias, and participants’ group membership on social inference, the current attempt did find this interaction to be significant, <em>F</em>(2, 157) = 3.25, <em>p</em> = .041. Since the key measure of interest is whether language bias can reveal group membership (main effect of language bias), the fact that the current attemp did not find a significant main effect of language bias on judgement of the communicator’s membership suggests that the original results on the social inferences meaure failed to replicate.</p>
 <p>Second, the current attempt also failed to find results consistent with the original ones on the friendship measure. Specifically, while the original study found a significant three-way interaction between the target’s group membership, language bias, and participants’ own group membership, the current attempt did not find this interaction to be significant, <em>F</em>(2, 166) = 0.62, <em>p</em> = .537. Moreover, the original study also found a significant two-way interaction between the target’s and participants’ group memberships, nested in the previous three-way interaction, but the current attempt failed to find such a significant interaction, <em>F</em>(2, 166) = 1.02, <em>p</em> = .364. Since the three-way interaction is the key result of interest, the fact that the current attempt did not find this interaction to be significant suggests that the original study failed to replicate on the friendship measure.</p>
 <p>In sum, since Study 3 in the original paper focused on the friendship measure and whether participants’ own group membership could be a moderator, the fact that the current study did not find any significant interactions on the friendship measure suggests that Study 3 in Porter et al. (2016) failed to replication in the current attempt.</p>
 </div>
 <div id="commentary" class="section level3">
 <h3>Commentary</h3>
 <p>The most plausible reason for the failure of replication in the current study is the ineffectiveness of the manipulation, which was reported as successful in the original study. Specifically, the analyses of the manipulation checks revealed that while the manipulation of language bias did influence participants’ perception of future helpfulness of the target, <em>F</em>(1, 167) = 7.15, <em>p</em> = .008, the manipulation failed to exert significant effects on participants’ perception of future rudeness of the target, <em>F</em>(1, 167) = 0.39, <em>p</em> = .536. Therefore, the failure to manipulate perceptions of the target’s future rudeness by language bias might have reduced the contrast between depictions of positive versus negative behavior that could have made in-group favoritism more salient for participants to infer the communicator’s group membership.</p>
-<p>We also considered the possibility that the proportions of political group affiliations of participants in the current study might be different from those in the original study, which might have contributed to the replication failure. However, a chi-square test of goodness of fit revealed that the proportions of political groups represented by participants in the current attempt did not differ significantly from the proportions in the original study.</p>
-<p>Lastly, it is also possible that the survey design made it hard for participants to retain memory of the content of the vignette. Specifically, the vignette passage was displayed on a separage page from the questions, and each question was also displayed on a separage page. Between the pages there was no “go back” option, so if participants forgot what was in the vignette, there had no means of going back to read the vignette again. Should we have included an attention check in the end, we might have known whether this indeed contributed to the failure of replication.</p>
+<p>We also considered the possibility that the proportions of political group affiliations of participants in the current study might be different from those in the original study, which might have contributed to the replication failure. However, a chi-square test of goodness of fit revealed that the proportions of political groups represented by participants in the current attempt did not differ significantly from the proportions in the original study, <em>X^2</em>(2) = 0.01, p =.99.</p>
+<p>Lastly, it is also possible that the survey design made it hard for participants to retain memory of the content of the vignette. Specifically, the vignette passage was displayed on a separage page from the questions, and each question was also displayed on a separage page. Between the pages there was no “go back” option, so if participants forgot what was in the vignette, they had no means of going back to read the vignette again. Should we have included an attention check in the end, we might have known whether this indeed contributed to the failure of replication.</p>
 </div>
 </div>
 
