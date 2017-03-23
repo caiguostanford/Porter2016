@@ -24,8 +24,6 @@
 *cache
 
 # Other
-packrat/lib*/
-packrat/src*/
 *.httr-oauth
 *.DS_Store
 
