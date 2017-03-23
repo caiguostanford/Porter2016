@@ -1,0 +1,763 @@
+---
+title: "Replication of Study 3 by Porter, Rheinschmidt-Same, and Richeson (2016, Psychological Science)"
+author: "Cai Guo (caiguo@stanford.edu)"
+date: "`March 07, 2017`"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+---
+
+<!-- Replication reports should all use this template to standardize reporting across projects.  These reports will be public supplementary materials that accompany the summary report(s) of the aggregate results. -->
+
+##Introduction
+
+This is a replication project of the Study 3 of Porter, Rheinschmidt-Same, and Richeson (2016) titled "Inferring identity from language: Linguistic intergroup bias informs social categorization" published in _Psychological Science_. The original study examined 1) whether people could infer a communicator's political group membership based on the kind of language bias in the communicator's description of another individual whose political group membership was known and 2) whether the effect in 1) could be moderated by the target's and participants' own political group memberships. The original study also examined 1) whether the kind of language bias used by the communicator could influence participants' intention to be friends with the communicator and 2) whether this intention was qualified by the interaction between participants' and the target's political group memberships. 
+
+The original study found that 1) regardless of participants' own political affiliations and the target's political group membership, favorable language bias, compared to unfavorable langauge bias, in the communicator's description led participants to infer that the communicator and the target shared a political group membership (no moderating effects of the target's or participants' own group memberships), and that 2) for the friendship measure, there was a significant interaction between LIB and target's political affiliation, which was qualified by a three-way interaction between LIB, target political affiliation and participants' own political affiliation. Subsequent analyses showed that democrat-identified participants were more likely to be friends with the communicator used favorable language bias, compared to unfavorable language bias, to describe a democrat -- this pattern did not show for Republican or Independent participants. 
+
+##Methods
+
+###Power Analysis
+
+The original effect size for the key test (three-way interaction for the friendship measure) was 0.24. To achieve 80% power, the planned sample size should be 168; 90% should be 220; 95% should be 268. 
+
+###Planned Sample
+
+Planned sample size is 168. Termination rule is that the study will finish as soon as it has reached this planned sample size. Sample method would be convenience sample on MTurk. 
+
+###Materials
+
+> "As in Study 1a, participants
+were asked to read a passage and then respond to questions.
+In the Republican-target condition, the passage
+indicated that Peter had voted for John McCain; in the
+Democratic-target condition, Peter had voted for Barack
+Obama.
+In the second part of the passage, participants were
+again provided with an unknown communicator’s
+description of Peter’s helpful and rude behaviors.
+Following Wigboldus et.al. (2000), we included a description
+of one discrete episode, expressed in the present
+tense, for each type of behavior (for the full descriptions,
+see Table S1 in the Supplemental Material available
+online). For example, the description of helpful behavior
+in the favorable-LIB condition was written in abstract language
+and read as follows: “On one occasion, there is a
+person in a wheelchair who needs assistance getting up
+a ramp. Peter reaches for the handles of the wheelchair.
+Peter is helpful.” In the unfavorable-LIB condition, helpful
+behavior was described concretely: “On one occasion,
+there is a person in a wheelchair who needs assistance
+getting up a ramp. Peter reaches for the handles of the
+wheelchair. Peter pushes the wheelchair up the ramp.”
+After reading the passage, participants indicated the
+likely group membership of the communicator on an
+8-point scale anchored by 1, definitely a Democrat, and
+8, definitely a Republican. They then rated the likelihood
+that they would be friends with the communicator, using
+a 5-point scale ranging from 1, it is not at all likely, to 5,
+it is extremely likely. Finally, participants completed the
+manipulation-check items and a demographic questionnaire
+on which they reported their political-party affiliation
+and political ideology."
+
+###Procedure	
+
+It is combined with materials -- see above.
+
+###Analysis Plan
+
+1. Conduct a 2 (Favorable vs. Unfavorable LIB) x 2 (Democrat vs. Republican Target) ANOVA to examine the manipulation check question -- whether favorable LIB (unfavorable LIB) led participants to conclude that the target was more likely to be helpful (rude) in the future and whether this pattern differed depending on the target's political affiliation. 
+
+2. Conduct a 2 (Favorable vs. Unfavorable LIB) × 2 (Democrat vs. Republican Target) × 3
+(Democrat vs. Republican
+vs. Independent Participant) analysis of variance (ANOVA) to examine whether participants can infer the communicator's political group identity based on the kind of language bias and the target's political affiliation as well as whether participants' own political affiliation moderated their judgment of the communicator's political identity. Subsequent analyses (two-way ANOVAs for two-way interactions across the levels of the 3rd variable and pairwise t-tests for simple effects) will be conducted depending on the results of the previous ANOVA to explain the details of the interactions. 
+
+3. Conduct a 2 (Favorable vs. Unfavorable LIB) × 2 (Democrat vs. Republican Target) × 3 (
+Democrat vs. Republican vs. Independent Participant) analysis
+of variance of participants’ ratings of their likelihood of
+becoming friends with the communicator. Subsequent analyses (two-way ANOVAs for two-way interactions across the levels of the 3rd variable and pairwise t-tests for simple effects) will be conducted depending on the results of the previous ANOVA to explain the details of the interactions. 
+
+###Key Analysis
+Key analysis is the three-way interaction in the ANOVA of the friendship measure in the previous section.
+
+###Differences from Original Study
+
+Since we failed to obtain the specific wording of questions 
+(prompt) and instructions from the authors, we came up with our own specific wording for the questions and instructions. We do not expect the differences to create significant deviation from the original study. In particular, we used "How would you describe your political affiliation" with three responses "Democrat", "Republican" and "Independent" (same response options as in the original paper) to ask about participants' own political affiliations. We used the prompt "How likely would you personally be friends with Peter" to assess participants' intention to be friends with the communicator. Likewise, we used the prompt "What do you think is the communicator's political group membership" to ask participants' perceptions of the communicator's political group affiliation given that of the target.
+
+### Methods Addendum (Post Data Collection)
+
+You can comment this section out prior to final report with data collection.
+
+#### Actual Sample
+The current replication attempt included 168 participants, the same number as the planned sample size. Among the 168 participants, 106 identified as men, 62 as women, and one as non-baniry. Moreover, racial and ethnic composition of the final sample was such that 29 identified as Asian/Pacific Islander, 8 as Black, 11 as Latino/Hispanic, 3 as Native American, 116 as White, and 2 as Other. All participants finished all the portions of the study, and none of them was excluded from data analyses. 
+
+#### Differences from pre-data collection methods plan
+None
+
+##Results
+
+### Data preparation
+
+Data preparation following the analysis plan.
+	
+```{r setup, message=FALSE, warning=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(ggplot2)
+library(magrittr)
+library(dplyr)
+library(broom)
+library(stringr)
+library(knitr)
+```
+####clean data
+```{r message=FALSE, warning=FALSE}
+library(readr)
+d <- read_csv("~/GitHub/Porter2016/Study 3 Data.csv")
+
+d_tidy = d %>%
+  mutate(index=rownames(d)) %>%
+  gather(variable, value, Communicator.F.D:Rude.U.R) %>%
+  group_by(index) %>%
+  separate(variable, into=c("variable.n", "LIB", "Party")) 
+
+ds = spread(d_tidy, variable.n, value)
+ds$Party = as.factor(ds$Party)
+ds$Political = as.factor(ds$Political)
+ds$LIB = as.factor(ds$LIB)
+```
+
+####Set up functions to clean regression outputs
+```{r message=FALSE, warning=FALSE}
+#print with 2 digits of precision
+fixed_digits <- function(xs, n = 2) {
+  formatC(xs, digits = n, format = "f")
+}
+
+# Print three digits of a p-value, but use
+# the "< .001" notation on tiny values.
+format_pval <- function(ps, html = FALSE) {
+  tiny <- ifelse(html, "&lt;&nbsp;.001", "< .001")
+  ps_chr <- ps %>% fixed_digits(3)
+  ps_chr[ps < 0.001] <- tiny
+  ps_chr
+}
+#fix names
+fix_names <- . %>%
+  str_replace(".Intercept.", "Intercept") %>%
+  str_replace("LIBU", "Unfavorable LIB") %>%
+  str_replace("LIBF", "Favorable LIB") %>%
+  str_replace("PartyD", "Democrat Target") %>%
+  str_replace("PartyR", "Republican Target") %>%
+  str_replace("PoliticalDemocrat", "Democrat Participant") %>%
+  str_replace("PoliticalRepublican", "Republican Participant") %>%
+  str_replace("PoliticalIndependent", "Independent Participant")
+
+#formatting pipeline for regression tables
+two_digits <- . %>% fixed_digits(2)
+table_names_1 <- c("Parameter", "Estimate", "SE",
+                 "_t_", "_p_")
+
+format_model_table_r <- . %>%
+  mutate_each(funs(two_digits),
+              -term, -p.value) %>%
+  mutate(term=fix_names(term), p.value = format_pval(p.value)) %>%
+  set_colnames(table_names_1)
+
+#formatting pipeline for anova tables
+table_names_2 <- c("Parameter", "DF", "Sum Sq", "Mean Sq",
+                 "F", "_p_")
+format_model_table_k <- . %>%
+  mutate_each(funs(two_digits),
+              -term, -p.value) %>%
+  mutate(term=fix_names(term), p.value = format_pval(p.value)) %>% 
+  set_colnames(table_names_2) 
+
+```
+
+####Descriptive Stats
+```{r descrptive}
+table(d$Gender)
+table(d$Race)
+summary(d$Age)
+```
+
+### Confirmatory analysis
+
+The analyses as specified in the analysis plan.  
+
+####Social Inference Graph in the original study
+
+![](http://journals.sagepub.com/na101/home/literatum/publisher/sage/journals/content/pssa/2016/pssa_27_1/0956797615612202/20170109/images/medium/10.1177_0956797615612202-fig3.gif)
+
+####Table in the original study
+
+![](http://journals.sagepub.com/na101/home/literatum/publisher/sage/journals/content/pssa/2016/pssa_27_1/0956797615612202/20170109/images/medium/10.1177_0956797615612202-table1.gif)
+
+####Social Inference Graph w/o facets in the current study
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+#set up error bar function
+##SEs of means
+sem <- function(x) {sd(x, na.rm=TRUE) / sqrt(length(x))}
+##95% CI as error bars
+ci <- function(x) {qt(.975, df=length(x)-1)*sem(x)}
+
+agg <- ds %>%
+  group_by(Party,LIB) %>%
+  summarise(m = mean(Communicator,na.rm=T),
+            se = ci(Communicator),
+            upper = m + se,
+            lower = m - se)
+
+plot1 = ggplot(agg,aes(x=Party, y=m, fill=LIB)) +
+  geom_bar(position="dodge", stat="identity") +
+  geom_errorbar(   aes( ymax=upper, ymin=lower ) , 
+                     		width   =.25,
+	                    	linetype="solid", position=position_dodge(.9)
+	                    	) + 
+  theme_bw() + ggtitle("Social Inference")
+plot1
+```
+
+####Social Inference Graph (faceted by participants' political affiliation) in the current study
+
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+#social inference graph
+agg <- ds %>%
+  group_by(Party,LIB, Political) %>%
+  summarise(mean = mean(Communicator,na.rm=T),
+            se = ci(Communicator),
+            upper = mean + se,
+            lower = mean - se)
+
+plot1 = ggplot(agg,aes(x=Party, y=mean, fill=LIB)) +
+  geom_bar(position="dodge", stat="identity") +
+  geom_errorbar(   aes( ymax=upper, ymin=lower ) , 
+                     		width   =.25,
+	                    	linetype="solid", position=position_dodge(.9)
+	                    	) + 
+  theme_bw() +
+facet_grid(. ~Political) + ggtitle("Social Inference")
+plot1
+#faceted by participants' own group membership
+```
+
+####Friendship Graph in the current study
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+#friendship graph
+agg <- ds %>%
+  group_by(Party,LIB, Political) %>%
+  summarise(mean = mean(Friend,na.rm=T),
+            se = ci(Friend),
+            upper = mean + se,
+            lower = mean - se)
+
+plot2 = ggplot(agg,aes(x=Party, y=mean, fill=LIB)) +
+  geom_bar(position="dodge", stat="identity") +
+  geom_errorbar(aes( ymax=upper, ymin=lower ), width =.25,
+	                    	linetype="solid", position=position_dodge(.9)) + 
+  theme_bw() +
+facet_grid(. ~Political) + ggtitle("Friendship")
+plot2 
+#faceted by participants' own group membership
+```
+
+####Manipulation Check
+
+#####Mean values and SDs of perception of future helpfulness grouped by LIB)
+```{r message=FALSE, warning=FALSE}
+
+Helpfulness = ds %>%
+  group_by(LIB) %>%
+  summarise(mean=mean(Helpful, na.rm=T), sd=sd(Helpful, na.rm=T))
+Helpfulness %>%
+  mutate(mean=round(mean, digits=2)) %>%
+   mutate(sd=round(sd, digits=2)) %>%
+  set_colnames(c("Language Bias", "Mean", "SD")) %>%
+    kable(align="r")
+```
+
+#####Main effect of LIB on estimation of helpfulness
+```{r message=FALSE, warning=FALSE}
+lm(Helpful~LIB, ds) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")  
+
+f = summary(lm(Helpful~LIB, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+```
+
+#####Interaction between LIB and target's political group
+```{r message=FALSE, warning=FALSE}
+lm(Helpful~LIB*Party, ds) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")  
+
+f = summary(lm(Helpful~LIB*Party, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+aov(lm(Helpful~LIB*Party, ds)) %>%
+  tidy %>%
+  format_model_table_k %>%
+  kable(align = "r")  
+```
+
+#####Mean values and SDs of perception of future rudeness grouped by LIB
+```{r message=FALSE, warning=FALSE}
+Rudeness = ds %>%
+  group_by(LIB) %>%
+  summarise(mean=mean(Rude, na.rm=T), sd=sd(Rude, na.rm=T))
+Rudeness %>%
+  mutate(mean=round(mean, digits=2)) %>%
+   mutate(sd=round(sd, digits=2)) %>%
+  set_colnames(c("Language Bias", "Mean", "SD")) %>%
+    kable(align="r")
+```
+
+#####Main effect of LIB on estimation of rudeness
+```{r message=FALSE, warning=FALSE}
+lm(Rude~LIB, ds) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")  
+
+f = summary(lm(Rude~LIB, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+```
+
+#####Interaction between LIB and target's political group
+```{r message=FALSE, warning=FALSE}
+lm(Rude~LIB*Party, ds) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")  
+
+f = summary(lm(Rude~LIB*Party, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+```
+
+#####Test the differences between ratings of helpfulness and rudeness regardless of the target's party
+
+```{r message=FALSE, warning=FALSE}
+d_merge = ds %>%
+  gather(variable, Percentage, Helpful, Rude) %>%
+  group_by(index) %>%
+  separate(variable, into=c("FutureBehavior")) 
+
+lm(Percentage~LIB*FutureBehavior, d_merge) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")  
+
+aov(lm(Percentage~LIB*FutureBehavior, d_merge)) %>%
+   tidy %>%
+  format_model_table_k %>%
+  kable(align = "r") 
+```
+
+#####Test whether the interaction between LIB and target's party differs as a function of the type of future behavior assessed
+```{r message=FALSE, warning=FALSE}
+lm(Percentage~LIB*Party*FutureBehavior, d_merge) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")  
+
+aov(lm(Percentage~LIB*Party*FutureBehavior, d_merge)) %>%
+   tidy %>%
+  format_model_table_k %>%
+  kable(align = "r")  
+```
+
+#####Test the difference between the helpful and rude models when the target is a democrat
+```{r message=FALSE, warning=FALSE}
+d_D = d_merge %>%
+  filter(Party=="D")
+
+lm(Percentage~LIB*FutureBehavior, d_D) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r") 
+
+aov(lm(Percentage~LIB*FutureBehavior, d_D)) %>%
+  tidy %>%
+  format_model_table_k %>%
+  kable(align = "r")  
+```
+
+#####Test the difference between the helpful and rude models when the target is a Republican
+```{r message=FALSE, warning=FALSE}
+d_R = d_merge %>%
+  filter(Party=="R")
+
+#when favorable LIB is the refernce
+lm(Percentage~LIB*FutureBehavior, d_R) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r") 
+
+#when unfavorable LIB is the reference
+d_R$LIB = relevel(d_R$LIB, ref="U")
+lm(Percentage~LIB*FutureBehavior, d_R) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r") 
+
+aov(lm(Percentage~LIB*FutureBehavior, d_R)) %>%
+  tidy %>%
+  format_model_table_k %>%
+  kable(align = "r")   
+```
+
+####Social Identity Measure
+
+#####Mean values of inferences of the communicator's political membership grouped by the target's political membership and language bias
+```{r message=FALSE, warning=FALSE}
+Inference = ds %>%
+  group_by(Party, LIB) %>%
+  summarise(mean=mean(Communicator, na.rm=T), sd=sd(Communicator, na.rm=T))
+Inference %>%
+  mutate(mean=round(mean, digits=2)) %>%
+   mutate(sd=round(sd, digits=2)) %>%
+  set_colnames(c("Target Party", "Language Bias", "Mean", "SD")) %>%
+    kable(align="r")
+```
+
+#####Mean values of inferences of the communicator's political membership grouped by the target's political membership, language bias, and participants' political membership
+```{r message=FALSE, warning=FALSE}
+Inference_1 = ds %>%
+  group_by(Party, LIB, Political) %>%
+  summarise(mean=mean(Communicator, na.rm=T), sd=sd(Communicator, na.rm=T))
+
+Inference_1 %>%
+  mutate(mean=round(mean, digits=2)) %>%
+  mutate(sd=round(sd, digits=2)) %>%
+  set_colnames(c("Target Party", "Language Bias", "Participant Party", "Mean", "SD")) %>%
+  kable(align="r")
+```
+
+#####Main effect of LIB on perceptions of the communicator's social group membership
+```{r message=FALSE, warning=FALSE}
+
+lm(Communicator~LIB, ds) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")   #LIB
+
+f = summary(lm(Communicator~LIB, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+aov(lm(Communicator~LIB, ds)) %>%
+   tidy %>%
+  format_model_table_k %>%
+  kable(align = "r")  
+```
+
+#####Main effect of target's party on perceptions of the communicator's social group membership
+```{r message=FALSE, warning=FALSE}
+lm(Communicator~Party, ds) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")  #Target's group membership
+
+f = summary(lm(Communicator~Party, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+aov(lm(Communicator~Party, ds)) %>%
+   tidy %>%
+  format_model_table_k %>%
+  kable(align = "r")  
+```
+
+#####Main effect of participant's party
+```{r message=FALSE, warning=FALSE}
+lm(Communicator~Political, ds) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")   #Participants' own group membership
+
+f = summary(lm(Communicator~Political, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+aov(lm(Communicator~Political, ds)) %>%
+   tidy %>%
+  format_model_table_k %>%
+  kable(align = "r")  
+```
+
+#####Three-way interaction Contrast 1 -- When Favorable LIB, Democrat (communicator), and Democrat (participant) are the defaults
+```{r message=FALSE, warning=FALSE}
+lm(Communicator~LIB*Party*Political, ds) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")  
+
+f = summary(lm(Communicator~LIB*Party*Political, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+aov(lm(Communicator~LIB*Party*Political, ds)) %>%
+   tidy %>%
+  format_model_table_k %>%
+  kable(align = "r")  
+
+##########
+lm(Communicator~LIB*Party,ds) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")  
+
+f = summary(lm(Communicator~LIB*Party,ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+aov(lm(Communicator~LIB*Party,ds)) %>%
+  tidy %>%
+  format_model_table_k %>%
+  kable(align = "r")  
+
+############  
+lm(Communicator~LIB*Political, ds) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")  
+
+f = summary(lm(Communicator~LIB*Political, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+aov(lm(Communicator~LIB*Political, ds)) %>%
+  tidy %>%
+  format_model_table_k %>%
+  kable(align = "r")  
+
+############
+lm(Communicator~Party*Political, ds) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")  
+
+f = summary(lm(Communicator~Party*Political, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+aov(lm(Communicator~Party*Political, ds)) %>%
+  tidy %>%
+  format_model_table_k %>%
+  kable(align = "r")  
+```
+
+####Friendship Measure
+
+#####Mean values and SDs of friendship grouped by LIB and Target's political membership
+```{r message=FALSE, warning=FALSE}
+Friendship = ds %>%
+  group_by(Party, LIB) %>%
+  summarise(mean=mean(Friend, na.rm=T), sd=sd(Friend, na.rm=T))
+Friendship %>%
+  mutate(mean=round(mean, digits=2)) %>%
+   mutate(sd=round(sd, digits=2)) %>%
+  set_colnames(c("Target Party", "Language Bias", "Mean", "SD")) %>%
+    kable(align="r")
+```
+
+#####Mean values and SDs of friendship grouped by LIB, Target's political membership, and Participants' political group membership
+```{r message=FALSE, warning=FALSE}
+Friendship_1 = ds %>%
+  group_by(Party, LIB, Political) %>%
+  summarise(mean=mean(Friend, na.rm=T), sd=sd(Friend, na.rm=T))
+Friendship_1 %>%
+  mutate(mean=round(mean, digits=2)) %>%
+   mutate(sd=round(sd, digits=2)) %>%
+  set_colnames(c("Target Party", "Language Bias", "Participant Party", "Mean", "SD")) %>%
+    kable(align="r")
+```
+
+#####Main effect of LIB on participants' intention to be friends with the communicator
+```{r message=FALSE, warning=FALSE}
+
+lm(Friend~LIB, ds)%>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")  #LIB
+
+f = summary(lm(Friend~LIB, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+aov(lm(Friend~LIB,ds)) %>%
+  tidy %>%
+  format_model_table_k %>%
+  kable(align = "r")  
+
+```
+
+#####Main effect of target's party on participants' intention to be friends with the communicator
+```{r message=FALSE, warning=FALSE}
+lm(Friend~Party, ds) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")   #Target's group membership
+
+f = summary(lm(Friend~Party, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+aov(lm(Friend~Party,ds)) %>%
+  tidy %>%
+  format_model_table_k %>%
+  kable(align = "r") 
+```
+
+#####Main effect of participants' party on participants' intention to be friends with the communicator
+```{r message=FALSE, warning=FALSE}
+lm(Friend~Political, ds) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")   #Participants' own group membership
+
+f = summary(lm(Friend~Political, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+aov(lm(Friend~Political, ds)) %>%
+  tidy %>%
+  format_model_table_k %>%
+  kable(align = "r") 
+```
+
+#####Three-way interaction Contrast 1 -- When Favorable LIB, Democrat (communicator), and Democrat (participant) are the defaults
+```{r message=FALSE, warning=FALSE}
+lm(Friend~LIB*Party*Political, ds) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")  
+
+f = summary(lm(Friend~LIB*Party*Political, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+aov(lm(Friend~LIB*Party*Political, ds)) %>%
+   tidy %>%
+  format_model_table_k %>%
+  kable(align = "r") 
+#########
+lm(Friend~LIB*Party, ds) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")  
+
+f = summary(lm(Friend~LIB*Party, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+aov(lm(Friend~LIB*Party, ds)) %>%
+   tidy %>%
+  format_model_table_k %>%
+  kable(align = "r") 
+
+#########change reference level of Party to parse the two-way interaction of LIB*Party
+ds$Party = relevel(ds$Party, ref = "R")
+lm(Friend~LIB*Party, ds) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")  
+
+f = summary(lm(Friend~LIB*Party, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+##########
+lm(Friend~Party*Political, ds) %>%
+  tidy %>%
+  format_model_table_r %>%
+  kable(align = "r")  
+
+f = summary(lm(Friend~Party*Political, ds))$fstatistic
+f %>%
+  two_digits
+pf(f[1], f[2], f[3], lower=FALSE) %>%
+  format_pval
+
+aov(lm(Friend~Party*Political, ds)) %>%
+   tidy %>%
+  format_model_table_k %>%
+  kable(align = "r") 
+```
+
+###Exploratory Analyses
+####Chi-square test of goodness of fit comparing the compositions of participants' political affiliation between the current replication attempt and the original study
+```{r message=FALSE, warning=FALSE}
+#Proportions of political groups represented by participants in the current sample
+prop.table(table(ds$Political))
+#chi-square test of goodness of fit comparing the current sample with the original
+chisq.test(x=prop.table(table(ds$Political)), p=c(0.414, 0.313, 0.172), rescale.p = T)
+```
+
+## Discussion
+
+### Summary of Replication Attempt
+
+Results in the current replication attempt revealed that overall the original study failed to replicate in the current attempt. 
+
+Specifically, first of all, unlike the original study, the current replication attempt did not find a significant main effect of language bias, _F_(1, 167) = 0.50, _p_ = .48. Moreover, while the original study did not find a significant main effect of the target's group membership, the current replication attempt did find such a significant main effect -- specifically, regardless of language bias, participants were more likely to perceive the communicator as sharing the same group membership with the target when the target was a Republican than when the target was a Democrat, _F_(1, 167) = 17.66, _p_ <.001. Similarly, while the original study did not find a significant main effect of participant's group membership, the current attemp did find such a significant main effect, _F_(2, 166) = 3.61, _p_ = .029 -- specifically, on average, participants who identified as Republican were less likely than those who identified as Democrat to perceive the communicator as having the same group membership as the target, _t_(166) = -2.67, _p_ = .008, whereas those who identified as Independent did not differ significantly from those who identified as Democrat, _t_(166) = -0.83, p = .405. In addition, while the original study did not find a significant three-way interactive effect between target's group membership, language bias, and participants' group membership, the current attempt did find this interaction to be significant, _F_(2, 157) = 3.25, _p_ = .041. Since the key measure of interest is whether language bias can reveal group membership (main effect of language bias), the fact that the current attemp did not find a significant main effect of language bias on judgement of the communicator's membership suggests that the original results on the social inferences meaure failed to replicate.
+
+Second, the current attempt also failed to find results consistent with the original ones on the friendship measure. Specifically, while the original study found a significant three-way interaction between the target's group membership, language bias, and participants' own group membership, the current attempt did not find this interaction to be significant, _F_(2, 166) = 0.62, _p_ = .537. Moreover, the original study also found a significant two-way interaction between the target's and participants' group memberships, nested in the previous three-way interaction, but the current attempt failed to find such a significant interaction, _F_(2, 166) = 1.02, _p_ = .364. Since the three-way interaction is the key result of interest, the fact that the current attempt did not find this interaction to be significant suggests that the original study failed to replicate on the friendship measure. 
+
+In sum, since Study 3 in the original paper focused on the friendship measure and whether participants' own group membership could be a moderator, the fact that the current study did not find any significant interactions on the friendship measure suggests that Study 3 in Porter et al. (2016) failed to replication in the current attempt.
+
+### Commentary
+
+The most plausible reason for the failure of replication in the current study is the ineffectiveness of the manipulation, which was reported as successful in the original study. Specifically, the analyses of the manipulation checks revealed that while the manipulation of language bias did influence participants' perception of future helpfulness of the target, _F_(1, 167) = 7.15, _p_ = .008, the manipulation failed to exert significant effects on participants' perception of future rudeness of the target, _F_(1, 167) = 0.39, _p_ = .536. Therefore, the failure to manipulate perceptions of the target's future rudeness by language bias might have reduced the contrast between depictions of positive versus negative behavior that could have made in-group favoritism more salient for participants to infer the communicator's group membership. 
+
+We also considered the possibility that the proportions of political group affiliations of participants in the current study might be different from those in the original study, which might have contributed to the replication failure. However, a chi-square test of goodness of fit revealed that the proportions of political groups represented by participants in the current attempt did not differ significantly from the proportions in the original study. 
+
+Lastly, it is also possible that the survey design made it hard for participants to retain memory of the content of the vignette. Specifically, the vignette passage was displayed on a separage page from the questions, and each question was also displayed on a separage page. Between the pages there was no "go back" option, so if participants forgot what was in the vignette, there had no means of going back to read the vignette again. Should we have included an attention check in the end, we might have known whether this indeed contributed to the failure of replication. 

@@ -36,3 +36,4 @@ mturk/
 # Specific file keep
 !README.md
 !original_paper.pdf
+.Rproj.user
